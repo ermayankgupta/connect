@@ -3,11 +3,7 @@ const User = require("../model/UserModal");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name } = req.body;
+  res.json({name:name})
 });
-const getUser = asyncHandler(async (req,res)=>{
-  res.json({
-    name:"mayank"
-  })
-})
 
-module.exports = { registerUser,getUser };
+module.exports = { registerUser };
