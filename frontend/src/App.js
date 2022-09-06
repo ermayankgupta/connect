@@ -20,12 +20,9 @@ const [value, setValue] = React.useState('1');
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="LOG IN" value="1" />
             <Tab label="SIGN UP" value="2" />
-         
           </TabList>
         </Box>
         <TabPanel value="1"><Login/></TabPanel>
-        
-       
         <TabPanel value="2"> <SingUp/></TabPanel>
         
       </TabContext>
