@@ -10,7 +10,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const userExits = await User.findOne({ email });
   if (userExits) {
     res.status(400);
-    throw new Error("User Already Exist Please LogIn With Email ");
+    throw new Error("User Already Exist");
   }
   const user = await User.create({
     name,
@@ -19,7 +19,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
   if (user) {
     res
-      .status(400)
+      .status(200)
       .json({
         _id: user._id,
         name: user.name,
