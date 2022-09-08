@@ -39,7 +39,32 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  res.status(200).send("hey")
+  const user = await User.findOne({ email });
+  if (user && bcrypt.compare(password, user.password)) {
+    res.status(200).json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      token: getToken(user._id),
+    });
+  } else {
+    res.status(200).json({
+      error: "Email and Password not match",
+    });
+  }
 });
 
-module.exports = { registerUser, loginUser };
+const allUsers = asyncHandler(async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+  res.status(200).json(users);
+});
+
+module.exports = { registerUser, loginUser, allUsers };
