@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Chat = () => {
-  return (
-    <div>Chat</div>
-  )
-}
+  let navigate = useNavigate();
 
-export default Chat
+  useEffect(() => {
+    if (!localStorage.getItem("user")) {
+      navigate("/");
+    }
+  }, []);
+  return <div>Chat</div>;
+};
+
+export default Chat;

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import LogoBg from '../assets/images/LogoBgImg.svg';
 
-const Header = () => {
+const Header = ({setLogoutView,logoutView}) => {
   return (
     <header>
       <div className="container mx-auto">
@@ -12,11 +12,9 @@ const Header = () => {
             <img src={LogoBg} alt="" className="w-60" />
           </div>
           <div className="flex">
-            <Link to="/login" className="mr-10">
-              login
-            </Link>
-            <Link to="/signup">SignUp</Link>
-          </div>
+            <p onClick={()=>setLogoutView("login")} className={`text-white text-xl cursor-pointer mr-10 ${logoutView!=="sign" &&"text-primary underline"}`}>Login</p>
+            <p onClick={()=>setLogoutView("sign")} className={`text-white text-xl cursor-pointer mr-10 ${logoutView==="sign" &&"text-primary underline"}`}>SignUp</p>
+            </div>
         </div>
       </div>
     </header>

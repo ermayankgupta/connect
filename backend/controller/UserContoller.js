@@ -40,15 +40,16 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  if (user && bcrypt.compare(password, user.password)) {
-    res.status(200).json({
+  if (user && (await bcrypt.compare(password, user.password))) {
+    res.json({
       id: user._id,
-      name: user.name,
+      name: user.name,  
       email: user.email,
+      pic: user.pic,
       token: getToken(user._id),
     });
   } else {
-    res.status(200).json({
+    res.status(400).json({
       error: "Email and Password not match",
     });
   }

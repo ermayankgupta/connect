@@ -1,26 +1,38 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import Header from "./Header";
+import { useNavigate } from "react-router-dom";
+import MailIcon from "../assets/images/MailIcon.svg";
+import PasswordIcon from "../assets/images/PasswordIcon.svg";
+import UserIcon from "../assets/images/UserIcon.svg";
 
 const Signup = () => {
   const { register, handleSubmit } = useForm();
+  let navigate = useNavigate();
   const onSubmit = async (data) => {
     const response = await axios.post("http://localhost:5000/api/user", data, {
       headers: {
         "Content-Type": "application/json",
       },
     });
+    debugger
+    if (response.status === 200) {
+      localStorage.setItem("user", JSON.stringify(response.data));
+      navigate(`/chat`);
+    }
     debugger;
-    console.log(data);
   };
   return (
     <>
-    <Header/>
       <div className="container mx-auto">
         <div className="w-80 mx-auto mt-40">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
+            <div className="flex item-center">
+              <img
+                src={UserIcon}
+                alt=""
+                className="w-6 mt-6 border-b-2 border-white pr-2"
+              />
               <input
                 type="text"
                 placeholder="name"
@@ -28,7 +40,12 @@ const Signup = () => {
                 {...register("name")}
               />
             </div>
-            <div>
+            <div className="flex item-center">
+              <img
+                src={MailIcon}
+                alt=""
+                className="w-6 mt-6 border-b-2 border-white pr-2"
+              />
               <input
                 type="email"
                 placeholder="email"
@@ -36,12 +53,17 @@ const Signup = () => {
                 {...register("email")}
               />
             </div>
-            <div>
+            <div className="flex item-center">
+              <img
+                src={PasswordIcon}
+                alt=""
+                className="w-6 mt-6 border-b-2 border-white pr-2"
+              />
               <input
                 type="password"
                 placeholder="password"
                 className="border-b-2 border-white py-1 text-white text-2xl w-full mt-6 placeholder:text-gray focus:outline-0"
-                {...register("password")} 
+                {...register("password")}
               />
             </div>
             <div>
