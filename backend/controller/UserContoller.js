@@ -49,9 +49,10 @@ const loginUser = asyncHandler(async (req, res) => {
       token: getToken(user._id),
     });
   } else {
-    res.status(400).json({
-      error: "Email and Password not match",
-    });
+    res.status(404);
+    res.send({
+      error:"Email and password not match"
+    })
   }
 });
 

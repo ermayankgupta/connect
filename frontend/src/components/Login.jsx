@@ -1,9 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import MailIcon from "../assets/images/MailIcon.svg";
 import PasswordIcon from "../assets/images/PasswordIcon.svg";
+import { loginUser } from "../api/userApi";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
@@ -11,25 +13,21 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await fetch("http://localhost:5000/api/user/login", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: data,
-      });
+      const response = await loginUser(data)
       debugger;
-      if (res.status === 200) {
-        localStorage.setItem("user", JSON.stringify(res.data));
+      if (response.status === 200) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+        toast("Login Successful");
         navigate(`/chat`);
       }
     } catch (err) {
-      alert(err);
+      toast.error("Email and Password not match");
     }
   };
 
   return (
     <>
+    <ToastContainer />
       <div className="container mx-auto">
         <div className="w-80 mx-auto mt-40">
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -42,7 +40,7 @@ const Login = () => {
               <input
                 type="email"
                 placeholder="email"
-                className="border-b-2 border-white py-1 text-white text-2xl w-full mt-6 placeholder:text-gray focus:outline-0"
+                className="border-b-2 border-white py-1 text-white text-2xl w-full mt-6 placeholder:text-gray focus:outline-0 bg-background"
                 {...register("email")}
               />
             </div>
@@ -55,7 +53,7 @@ const Login = () => {
               <input
                 type="password"
                 placeholder="password"
-                className="border-b-2 border-white py-1 text-white text-2xl w-full mt-6 placeholder:text-gray focus:outline-0"
+                className="border-b-2 border-white py-1 text-white text-2xl w-full mt-6 placeholder:text-gray bg-background focus:outline-0"
                 {...register("password")}
               />
             </div>
